@@ -1,24 +1,22 @@
 #include <stdio.h>
-#include <stdlib.h>                 // o trabalho apresenta um sistema simples feito para gerenciar um consultorio de psicologia.
+#include <stdlib.h>               
 #include <string.h>
 
 typedef struct {
     int id;
     char nome[50];
-    int idade;						// aqui, é a estrutura que contem os dados do sistema 		
+    int idade;								
     char diagnostico[100];
 } Paciente;
 
-Paciente *pacientes = NULL; 		// declara um ponteiro para armazenar uma lista de pacientes de forma dinamica. NULL pq nao tem nenhuma memoria alocada ainda 
-int total_pacientes = 0;  			// variavel criada para armazenar o numero de pacientes. no momento é 0;
+Paciente *pacientes = NULL; 		 
+int total_pacientes = 0;  			
 
-
-void cadastrar_paciente();          // funcao para cadatsrar pacientes 
-void consultar_paciente();			// funcao para consultar pacientes 
-void gerar_relatorio();				// funcao para gerar relatoriosn
-void excluir_paciente();			// funcao para  excluir paciente 
-
-int main() {         // interage com o usuario 
+void cadastrar_paciente();          
+void consultar_paciente();			 
+void gerar_relatorio();				
+void excluir_paciente();			
+int main() {         
     int opcao;
 
     do {
@@ -37,7 +35,7 @@ int main() {         // interage com o usuario
                 cadastrar_paciente();
                 break;
             case 2:
-                consultar_paciente();                                                  // essa parte é a interacao com o usuario, ele pode escolher as opcoes.
+                consultar_paciente();                                                  
                 break;
             case 3:
                 gerar_relatorio();
@@ -49,7 +47,7 @@ int main() {         // interage com o usuario
                 printf("Saindo do sistema...\n");
                 break;
             default:
-                printf("Opcao invalida. Tente novamente.\n");                    // se caso ele nao escolher nenhuma das opçoes 
+                printf("Opcao invalida. Tente novamente.\n");                    
         }
     } while (opcao != 5);     // vai repetir ate o usuario digitar 5(sair)
     free(pacientes);         
@@ -58,7 +56,7 @@ int main() {         // interage com o usuario
 
 
 void cadastrar_paciente() {
-    pacientes = realloc(pacientes, (total_pacientes + 1) * sizeof(Paciente));         // ajusta o tamanho do array para incluir mais um paciente             
+    pacientes = realloc(pacientes, (total_pacientes + 1) * sizeof(Paciente));                      
     if (pacientes == NULL) {
         printf("Erro ao alocar memoria para novos pacientes.\n");
         return;
@@ -72,7 +70,7 @@ void cadastrar_paciente() {
     p.nome[strcspn(p.nome, "\n")] = 0; 
  
     printf("Digite a idade do paciente: ");
-    scanf("%d", &p.idade);                                                                 // essa parte adiciona um paciente a lista 
+    scanf("%d", &p.idade);                                                                
     getchar(); 
 
     printf("Digite o diagnostico do paciente: ");
@@ -90,7 +88,7 @@ void consultar_paciente() {
     for (int i = 0; i < total_pacientes; i++) {
         if (pacientes[i].id == id) {
             printf("\n--- Paciente %d ---\n", id);
-            printf("Nome: %s\n", pacientes[i].nome);                                          // exibe os dados do paciente especifico atraves do ID
+            printf("Nome: %s\n", pacientes[i].nome);                                          
             printf("Idade: %d\n", pacientes[i].idade);
             printf("Diagnostico: %s\n", pacientes[i].diagnostico);
             return;
@@ -104,31 +102,31 @@ void gerar_relatorio() {
     printf("\n--- Relatorio de Pacientes ---\n");
     for (int i = 0; i < total_pacientes; i++) {
         printf("ID: %d\n", pacientes[i].id);
-        printf("Nome: %s\n", pacientes[i].nome);												// exibe todos os pacientes da lista com os dados e um resumo de cada caso
+        printf("Nome: %s\n", pacientes[i].nome);												
         printf("Idade: %d\n", pacientes[i].idade);
         printf("Diagnostico: %s\n\n", pacientes[i].diagnostico);
     }
 }
 
-void excluir_paciente() {                           //exclui pacientes atraves do id 
+void excluir_paciente() {                           
     int id, encontrado = 0;
-    printf("Digite o ID do paciente para exclusao: ");          //procura o paciente pelo ID.
+    printf("Digite o ID do paciente para exclusao: ");          
     scanf("%d", &id);
 
     for (int i = 0; i < total_pacientes; i++) {
         if (pacientes[i].id == id) {                                     
-            encontrado = 1;													//Move os pacientes seguintes para preencher a lacuna. (espaço no array)
+            encontrado = 1;													
             for (int j = i; j < total_pacientes - 1; j++) {       
                 pacientes[j] = pacientes[j + 1];									
             }
             total_pacientes--;
-            pacientes = realloc(pacientes, total_pacientes * sizeof(Paciente));                        // Reduz o total de pacientes e ajusta a memória.
+            pacientes = realloc(pacientes, total_pacientes * sizeof(Paciente));                        
             printf("Paciente com ID %d excluido com sucesso.\n", id);
             break;
         }
     }
 
     if (!encontrado) {
-        printf("Paciente com ID %d nao encontrado.\n", id);                       //Exibe mensagem de sucesso e encerra.
+        printf("Paciente com ID %d nao encontrado.\n", id);                      
     }
 }
